@@ -19,7 +19,8 @@
   "homepage": "https://github.com/burgocorp/shoppingmall#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.7.11"
+    "mongoose": "^5.7.11",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
