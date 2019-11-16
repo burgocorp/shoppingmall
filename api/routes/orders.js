@@ -15,6 +15,12 @@ router.get('/', (req, res) => {
 
 //오더 데이터 생성하기 
 router.post('/', (req, res) => {
+
+    const order = {
+         productname : req.body.productname,
+         
+    }
+
     res.json({
         msg: "데이터 생성됨"
     });

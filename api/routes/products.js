@@ -12,8 +12,18 @@ router.get('/', (req, res) => {
 
 // product 데이터 생성하기 
 router.post('/', (req, res) =>{
+   //바디파서는 사용자입력값을 쉽게 구분해주기 위한 라이브러리다 
+    const product = {
+        name: req.body.productname,
+        price:req.body.productprice,
+        qty: req.body.productqty,
+        from:req.body.productfrom
+    };
+
+
     res.json({
-        msg: "데이터 생성됨"
+        msg: "데이터 생성됨",
+        productInfo: product
     });
 });
 
