@@ -79,10 +79,34 @@ router.post('/', (req, res) =>{
 });
 
 // products 데이터 수정하기 
-router.patch('/', (req, res) => {
-    res.json({
-        msg: "데이터 수정됨"
-    });
+router.patch('/:product_id', (req, res) => {
+
+    const id = req.params.product_id;
+
+    const updateOps = {};
+
+    for (ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+
+
+    productModel
+        .update({_id : id}, {$set : updateOps})
+        .exec()
+        .then(result => {
+            res.json({
+                msg : "updated product",
+                productInfo : result
+
+            });
+            
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
+    
 });
 
 
