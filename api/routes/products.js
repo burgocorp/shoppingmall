@@ -30,10 +30,10 @@ router.get('/', (req, res) => {
 router.get('/:product_id', (req, res) => {
 // url에서 추가 되는 변수값은 params이라고 한다 (디테일 경로)
     const id = req.params.product_id;
-    productModel
-        .findById(id)
-        .exec()
-        .then(doc => {
+    productModel //<= 데이터를 담겨져 있는 그릇 
+        .findById(id)// id를 찾는다 
+        .exec()//실행시킨다
+        .then(doc => {// 실행성공했을 때의 메시지 
         
             res.json({
                 msg : "succesfull product data",
@@ -85,11 +85,30 @@ router.patch('/', (req, res) => {
     });
 });
 
+
+
+
 // products 데이터 삭제하기 
-router.delete('/', (req, res) =>{
-    res.json({
-        msg: "데이터 삭제하기"
-    });
+router.delete('/:product_id', (req, res) =>{
+ 
+    const id = req.params.product_id;
+
+    productModel
+        .remove({_id : id })
+        .exec()
+        .then(result => {
+            res.json({
+                msg : "deleted product"
+            });
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+         });
+
+
+
 });
 
 
