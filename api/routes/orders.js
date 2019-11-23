@@ -22,7 +22,8 @@ router.post('/', (req, res) => {
     }
 
     res.json({
-        msg: "데이터 생성됨"
+        msg: "데이터 생성됨",
+        orderInfo : order
     });
 });
 
