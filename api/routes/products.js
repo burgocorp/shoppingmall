@@ -4,12 +4,32 @@ const productModel = require('../models/product');
 
 // 프로덕트와 관련된 api 즉 데이타CRUD 가 여기서 진행 될 것이다 
 
-// products데이타 불러오기 
+// products 전체 데이타 불러오기 
 router.get('/', (req, res) => {
-    res.json({
-        msg: "productdata get"
-    });
+
+    productModel
+        .find()
+        .exec()
+        .then(docs =>{
+            res.json({
+                msg : "succeseful product total get",
+                count : docs.length,
+                productsInfo : docs
+            });
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
+    
+
+
+
 });
+
+
+
 
 // product 데이터 생성하기 
 router.post('/', (req, res) =>{
