@@ -23,11 +23,32 @@ router.get('/', (req, res) => {
             });
         });
     
+});
 
+
+// 상세 프로덕트 불러오기 
+router.get('/:product_id', (req, res) => {
+// url에서 추가 되는 변수값은 params이라고 한다 (디테일 경로)
+    const id = req.params.product_id;
+    productModel
+        .findById(id)
+        .exec()
+        .then(doc => {
+        
+            res.json({
+                msg : "succesfull product data",
+                productInfo : doc
+
+            });
+        })
+        .catch(err =>{
+            res.json({
+                msg : err.message
+            });
+        });
 
 
 });
-
 
 
 
