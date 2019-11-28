@@ -10,13 +10,36 @@ router.get('/', (req, res) => {
     productModel
         .find()
         .exec()
-        .then(docs =>{
-            res.json({
-                msg : "succeseful product total get",
+        .then(docs => {
+
+            const response = {
                 count : docs.length,
-                productsInfo : docs
-            });
-        })
+                productsInfo : docs.map(doc => {
+                    return{
+                        name : doc.name,
+                        price : doc.price,
+                        id : doc._id,
+                        request : {
+                            type : "GET",
+                            url : "http://localhost:4000/products/" + doc._id
+                        }
+                    };
+                })
+            };
+
+            res.json(response);
+            
+
+
+
+
+        }
+            // res.json({
+            //     msg : "succeseful product total get",
+            //     count : docs.length,
+            //     productsInfo : docs
+            // });
+        )
         .catch(err => {
             res.json({
                 msg : err.message
@@ -37,7 +60,11 @@ router.get('/:product_id', (req, res) => {
         
             res.json({
                 msg : "succesfull product data",
-                productInfo : doc
+                productInfo : doc,
+                request: {
+                    type : "GET",
+                    url : "http://localhost:4000/products/"
+                }
 
             });
         })
@@ -65,7 +92,11 @@ router.post('/', (req, res) =>{
         .then(result => {
             res.json({
                 msg : "sucessful posting product data...",
-                productInfo: result
+                productInfo: result,
+                request: {
+                    type : "GET",
+                    url : "http://localhost:4000/products/" + result._id
+                }
             });
 
         })
@@ -84,7 +115,8 @@ router.patch('/:product_id', (req, res) => {
     const id = req.params.product_id;
 
     const updateOps = {};
-
+    // for문 찾아볼 것 
+    // 업데이트 대상을 정의 한 것 
     for (ops of req.body) {
         updateOps[ops.propName] = ops.value;
     }
@@ -96,7 +128,11 @@ router.patch('/:product_id', (req, res) => {
         .then(result => {
             res.json({
                 msg : "updated product",
-                productInfo : result
+                productInfo : result,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:4000/products/" + id
+                }
 
             });
             
@@ -122,7 +158,12 @@ router.delete('/:product_id', (req, res) =>{
         .exec()
         .then(result => {
             res.json({
-                msg : "deleted product"
+                msg : "deleted product",
+                request : {
+                    type : "GET",
+                    url : "http://localhost:4000/products/"
+                }
+
             });
         })
         .catch(err => {
