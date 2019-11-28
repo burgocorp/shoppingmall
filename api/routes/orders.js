@@ -11,11 +11,62 @@ const productModel = require("../models/product"); //productid를 검색하기 �
 
 //오더데이터 불러오기 
 router.get('/', (req, res) => {
-    res.json({
-        msg: "orderdate get"
-    });
+
+    orderModel
+        .find()
+        .exec()
+        .then(docs => {
+
+            const response = {
+                count : docs.length,
+                orderInfo : docs.map(doc => {
+                    return{
+                        product : doc.product,
+                        qty : doc.qty,
+                        id : doc._id,
+                        request : {
+                            type : "GET",
+                            url : "http://localhost:4000/orders/" + doc._id
+                        }
+
+                    };
+                })
+            };
+
+            res.json(response);
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
 });
 
+//오더 상세데이터 불러오기 
+
+router.get("/:order_id", (req, res) => {
+
+    const id = req.params.order_id;
+    orderModel
+        .findById(id)
+        .exec()
+        .then(doc => {
+
+            res.json({
+                msg : "successfull get detail order data",
+                orderInfo : doc,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:4000/orders/"
+                }
+            });
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
+});
 //오더 데이터 생성하기 
 router.post('/', (req, res) => {
     // 먼저 제품 아이디 검색한다 -> 
