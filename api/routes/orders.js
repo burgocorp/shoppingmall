@@ -119,10 +119,36 @@ router.post('/', (req, res) => {
 });
 
 //오더 데이터 수정하기 
-router.patch('/', (req, res) => {
-    res.json({
-        msg: "데이터 수정하기"
-    });
+router.patch('/:order_id', (req, res) => {
+
+    const id = req.params.order_id;
+
+    const updateOps = {};
+
+    for (ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+
+    orderModel
+        .update({_id : id } , {$set : updateOps})
+        .exec()
+        .then(result => {
+            res.json({
+                msg : "updated order data",
+                orderInfo : result,
+                request : {
+                    type : "GET",
+                    url : "http://localhost:4000/orders/" + id
+                }
+
+            });
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
+
 });
 
 //오더 데이터 삭제하기 
