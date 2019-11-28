@@ -13,6 +13,7 @@ const bodyParser = require('body-parser');
 //require(경로)를 orderRoute와 productRoute로 상수화 시켜준다 
 const productsRoute = require('./api/routes/products');
 const ordersRoute = require('./api/routes/orders');
+const usersRoute = require('./api/routes/user');
 
 //몽고디비연결 코드 , 유알엘을 넣어준다 
 const mongoDBurl = "mongodb+srv://myounghwan:qnfmrh0228@cluster0-1dywn.mongodb.net/test?retryWrites=true&w=majority";
@@ -30,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended:true }));
 
 app.use('/products', productsRoute);
 app.use('/orders', ordersRoute);
-
+app.use('/user', usersRoute);
 
 
 
