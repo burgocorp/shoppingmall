@@ -126,10 +126,30 @@ router.patch('/', (req, res) => {
 });
 
 //오더 데이터 삭제하기 
-router.delete('/', (req, res) => {
-    res.json({
-        msg: "데이터 삭제하기"
-    });
+router.delete('/:order_id', (req, res) => {
+
+    const id = req.params.order_id;
+
+    orderModel
+        .remove({_id : id })
+        .exec()
+        .then(result => {
+            res.json({
+                msg : "deleted order data",
+                request: {
+                    type : "GET",
+                    url : "http://localhost:4000/orders/"
+
+                }
+                
+            });
+        })
+        .catch(err => {
+            res.json({
+                msg : err.message
+            });
+        });
+   
 });
 
 
