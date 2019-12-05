@@ -3,7 +3,7 @@ const router = express.Router();
  //password 암호화 library
 const bcrypt = require('bcryptjs');
 const userModel = require('../models/user');
-
+const jwt = require('jsonwebtoken');
 
 // 회원가입
 router.post('/register', (req, res) => {
@@ -71,7 +71,7 @@ router.post('/register', (req, res) => {
 // 로그인
 
 router.post('/login', (req, res) => {
-    // email 유무체크 => password 가 맞는지 체크(decoding) => response 출력
+    // email 유무체크 => password 가 맞는지 체크(decoding) => 토큰 발행 => response 출력
     userModel
         .findOne({email : req.body.email})
         .exec()
@@ -95,8 +95,18 @@ router.post('/login', (req, res) => {
 
                     }
                     if (result){
+                        // 토큰 발행
+                        const token = jwt.sign({
+                            email : user.email,
+                            userId: user._id
+                        },
+                        'secret', { expiresIn: '1h'}
+                        );
+
+
                         res.json({
-                            msg : "successfull login"
+                            msg : "successfull login",
+                            tokenInfo : token
                         });
                     }
                     res.json({
