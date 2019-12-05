@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 //몽구스라이브러리를 불러온다
-const mongoose = require('mongoose'); 
+
 //morgan을 불러온다 
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -15,11 +15,7 @@ const productsRoute = require('./api/routes/products');
 const ordersRoute = require('./api/routes/orders');
 const usersRoute = require('./api/routes/user');
 
-//몽고디비연결 코드 , 유알엘을 넣어준다 
-const mongoDBurl = "mongodb+srv://myounghwan:qnfmrh0228@cluster0-1dywn.mongodb.net/test?retryWrites=true&w=majority";
-mongoose.connect(mongoDBurl, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => console.log("MongoDB connected..."))
-    .catch(err => console.log(err.message));
+require('./db');
 
 
     //다양한 버젼을 테스트 해볼것
