@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productModel = require('../models/product');
+const checkAuth = require('../middleware/check-auth');
 
 // 프로덕트와 관련된 api 즉 데이타CRUD 가 여기서 진행 될 것이다 
 
@@ -50,7 +51,7 @@ router.get('/', (req, res) => {
 
 
 // 상세 프로덕트 불러오기 
-router.get('/:product_id', (req, res) => {
+router.get('/:product_id', checkAuth, (req, res) => {
 // url에서 추가 되는 변수값은 params이라고 한다 (디테일 경로)
     const id = req.params.product_id;
     productModel //<= 데이터를 담겨져 있는 그릇 
@@ -80,7 +81,7 @@ router.get('/:product_id', (req, res) => {
 
 
 // product 데이터 생성하기 
-router.post('/', (req, res) =>{
+router.post('/', checkAuth, (req, res) =>{
    //바디파서는 사용자입력값을 쉽게 구분해주기 위한 라이브러리다 
     const product = new productModel({
         name : req.body.productname,
@@ -110,7 +111,7 @@ router.post('/', (req, res) =>{
 });
 
 // products 데이터 수정하기 
-router.patch('/:product_id', (req, res) => {
+router.patch('/:product_id', checkAuth, (req, res) => {
 
     const id = req.params.product_id;
 
@@ -149,7 +150,7 @@ router.patch('/:product_id', (req, res) => {
 
 
 // products 데이터 삭제하기 
-router.delete('/:product_id', (req, res) =>{
+router.delete('/:product_id', checkAuth, (req, res) =>{
  
     const id = req.params.product_id;
 

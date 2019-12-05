@@ -6,11 +6,11 @@ const router = express.Router();
 
 const orderModel = require("../models/orders");
 const productModel = require("../models/product"); //productid를 검색하기 위해 불러온다 
-
+const checkAuth = require('../middleware/check-auth');
 // 오더와 관련된 api 즉 order CRUD는 여기서 진행될 것이다 
 
 //오더데이터 불러오기 
-router.get('/', (req, res) => {
+router.get('/', checkAuth, (req, res) => {
 
     orderModel
         .find()
@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
 
 //오더 상세데이터 불러오기 
 
-router.get("/:order_id", (req, res) => {
+router.get("/:order_id", checkAuth, (req, res) => {
 
     const id = req.params.order_id;
     orderModel
@@ -68,7 +68,7 @@ router.get("/:order_id", (req, res) => {
         });
 });
 //오더 데이터 생성하기 
-router.post('/', (req, res) => {
+router.post('/', checkAuth, (req, res) => {
     // 먼저 제품 아이디 검색한다 -> 
     productModel
         .findById(req.body.productid)
@@ -119,7 +119,7 @@ router.post('/', (req, res) => {
 });
 
 //오더 데이터 수정하기 
-router.patch('/:order_id', (req, res) => {
+router.patch('/:order_id',checkAuth, (req, res) => {
 
     const id = req.params.order_id;
 
@@ -152,7 +152,7 @@ router.patch('/:order_id', (req, res) => {
 });
 
 //오더 데이터 삭제하기 
-router.delete('/:order_id', (req, res) => {
+router.delete('/:order_id', checkAuth,(req, res) => {
 
     const id = req.params.order_id;
 
